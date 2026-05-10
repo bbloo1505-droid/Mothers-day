@@ -87,6 +87,80 @@
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.2);
 }
 
+.hero-film {
+  margin-top: 2rem;
+  width: min(100%, 22rem);
+}
+
+.hero-film__label {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.78;
+}
+
+.hero-film__strip {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.45rem;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 0.2rem 0.15rem 0.45rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.hero-film__strip::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-film__frame {
+  flex: 0 0 auto;
+  width: 3.35rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.35rem;
+  background: linear-gradient(160deg, #fffefb, #f3e6ea);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 10px 22px rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  transform: rotate(-2deg);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.hero-film__frame:nth-child(even) {
+  transform: rotate(2.5deg) translateY(3px);
+}
+
+.hero-film__frame:hover,
+.hero-film__frame:focus-visible {
+  transform: rotate(0deg) translateY(-2px) scale(1.06);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.65),
+    0 14px 28px rgba(0, 0, 0, 0.28);
+  z-index: 1;
+}
+
+.hero-film__frame:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 2px;
+}
+
+.hero-film__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 0.22rem;
+}
+
 .hero__flourish {
   position: absolute;
   z-index: 1;
@@ -267,7 +341,7 @@ main {
 }
 
 .letter {
-  padding: 2.5rem 1.1rem 3.25rem;
+  padding: 2.25rem 0.85rem 3.25rem;
   opacity: 0;
   transform: translateY(22px);
   transition:
@@ -280,10 +354,220 @@ main {
   transform: none;
 }
 
-.letter__frame {
-  max-width: 38rem;
-  margin: 0 auto;
+.letter-stage {
   position: relative;
+  max-width: 58rem;
+  margin-inline: auto;
+  padding: 1.75rem 0.85rem 2.75rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    'tl tr'
+    'card card'
+    'bl br';
+  gap: 0.85rem 0.75rem;
+  align-items: stretch;
+}
+
+.letter-stage__wash {
+  position: absolute;
+  inset: 0.25rem 0 1rem;
+  z-index: 0;
+  border-radius: 1.75rem;
+  background:
+    radial-gradient(80% 70% at 50% 0%, rgba(255, 228, 236, 0.55), transparent 62%),
+    radial-gradient(60% 50% at 10% 90%, rgba(201, 169, 98, 0.12), transparent 55%),
+    linear-gradient(180deg, rgba(250, 246, 242, 0.95), rgba(245, 235, 238, 0.65));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  pointer-events: none;
+}
+
+.letter-photo {
+  position: relative;
+  z-index: 1;
+  justify-self: center;
+  align-self: center;
+  width: min(42vw, 11.5rem);
+  padding: 0;
+  border: 0;
+  border-radius: 0.55rem;
+  cursor: pointer;
+  background: linear-gradient(165deg, #fffefb 0%, #f7eef1 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.65),
+    0 14px 36px rgba(60, 28, 38, 0.14),
+    0 2px 6px rgba(60, 28, 38, 0.06);
+  transform: rotate(var(--letter-rot, -5deg));
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.letter-photo--tl {
+  grid-area: tl;
+  --letter-rot: -7deg;
+}
+
+.letter-photo--tr {
+  grid-area: tr;
+  --letter-rot: 6deg;
+}
+
+.letter-photo--bl {
+  grid-area: bl;
+  --letter-rot: 5deg;
+}
+
+.letter-photo--br {
+  grid-area: br;
+  --letter-rot: -5deg;
+}
+
+.letter-photo--ml,
+.letter-photo--mr {
+  display: none;
+}
+
+.letter-photo__matte {
+  position: absolute;
+  inset: 5px;
+  border-radius: 0.42rem;
+  box-shadow: inset 0 0 0 1px rgba(44, 34, 38, 0.06);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.letter-photo__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 0.48rem;
+}
+
+.letter-photo:hover,
+.letter-photo:focus-visible {
+  transform: rotate(0deg) translateY(-4px) scale(1.02);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.75),
+    0 22px 48px rgba(60, 28, 38, 0.18);
+  z-index: 3;
+}
+
+.letter-photo:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.letter.is-visible .letter-photo {
+  animation: letter-photo-in 0.85s ease backwards;
+}
+
+.letter.is-visible .letter-photo--tr {
+  animation-delay: 0.08s;
+}
+
+.letter.is-visible .letter-photo--bl {
+  animation-delay: 0.14s;
+}
+
+.letter.is-visible .letter-photo--br {
+  animation-delay: 0.2s;
+}
+
+.letter.is-visible .letter-photo--ml {
+  animation-delay: 0.12s;
+}
+
+.letter.is-visible .letter-photo--mr {
+  animation-delay: 0.18s;
+}
+
+@keyframes letter-photo-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) rotate(0deg) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--letter-rot, 0deg)) scale(1);
+  }
+}
+
+@media (min-width: 900px) {
+  .letter-stage {
+    display: block;
+    min-height: 42rem;
+    padding: 2.75rem 1.25rem 4.75rem;
+  }
+
+  .letter-stage__wash {
+    inset: 1rem 5% 2rem;
+    border-radius: 2rem;
+  }
+
+  .letter-photo--tl,
+  .letter-photo--tr,
+  .letter-photo--bl,
+  .letter-photo--br,
+  .letter-photo--ml,
+  .letter-photo--mr {
+    display: block;
+    position: absolute;
+    width: clamp(7.5rem, 12vw, 10.75rem);
+    grid-area: unset;
+    justify-self: unset;
+    align-self: unset;
+  }
+
+  .letter-photo--tl {
+    top: 2%;
+    left: max(0.25rem, env(safe-area-inset-left));
+    --letter-rot: -10deg;
+  }
+
+  .letter-photo--tr {
+    top: 5%;
+    right: max(0.25rem, env(safe-area-inset-right));
+    --letter-rot: 8deg;
+  }
+
+  .letter-photo--bl {
+    bottom: 14%;
+    left: max(0.5rem, env(safe-area-inset-left));
+    --letter-rot: 7deg;
+  }
+
+  .letter-photo--br {
+    bottom: 11%;
+    right: max(0.35rem, env(safe-area-inset-right));
+    --letter-rot: -6deg;
+  }
+
+  .letter-photo--ml {
+    top: 36%;
+    left: max(0.25rem, env(safe-area-inset-left));
+    --letter-rot: -4deg;
+  }
+
+  .letter-photo--mr {
+    top: 40%;
+    right: max(0.25rem, env(safe-area-inset-right));
+    --letter-rot: 6deg;
+  }
+
+  .letter__frame {
+    margin: 4.75rem auto 0;
+  }
+}
+
+.letter__frame {
+  grid-area: card;
+  max-width: 38rem;
+  width: 100%;
+  margin-inline: auto;
+  position: relative;
+  z-index: 2;
   border-radius: 1.35rem;
   padding: 1px;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(232, 196, 207, 0.45));
@@ -804,5 +1088,10 @@ main {
   .finale {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .letter-photo {
+    opacity: 1 !important;
+    animation: none !important;
   }
 }

@@ -23,8 +23,10 @@ const CONTENT = {
     title: 'Happy Mother’s Day, Anna',
     subtitle: 'A little card made with love',
     cta: 'Open your card',
+    filmstripLabel: 'A glimpse of what’s inside',
   },
   letter: {
+    orbitAriaLabel: 'A few memories around your note',
     greeting: 'Dear Anna,',
     paragraphs: [
       'Happy Mother’s Day.',
@@ -97,6 +99,19 @@ const GALLERY_ITEMS = PHOTO_PATHS.map((src, i) => ({
   caption: GALLERY_CAPTIONS[i] ?? '',
   layout: GALLERY_LAYOUT[i] ?? 'slot-default',
 }))
+
+/** Gallery indices (0-based) placed around the letter — easy to swap */
+const LETTER_ORBIT = [
+  { galleryIndex: 2, slot: 'tl' },
+  { galleryIndex: 5, slot: 'tr' },
+  { galleryIndex: 3, slot: 'bl' },
+  { galleryIndex: 1, slot: 'br' },
+  { galleryIndex: 6, slot: 'ml' },
+  { galleryIndex: 4, slot: 'mr' },
+]
+
+/** Small strip under the hero title — gallery indices */
+const HERO_FILMSTRIP = [0, 2, 4, 6, 8]
 
 function PetalsLayer() {
   return (
@@ -296,6 +311,26 @@ export default function App() {
           <button type="button" className="btn btn--primary" onClick={scrollToCard}>
             {CONTENT.hero.cta}
           </button>
+          <div className="hero-film">
+            <p className="hero-film__label">{CONTENT.hero.filmstripLabel}</p>
+            <div className="hero-film__strip" role="list">
+              {HERO_FILMSTRIP.map((gi) => {
+                const item = GALLERY_ITEMS[gi]
+                if (!item) return null
+                return (
+                  <button
+                    key={gi}
+                    type="button"
+                    className="hero-film__frame"
+                    onClick={() => openLightbox(gi)}
+                    aria-label={`Open photo ${gi + 1} in viewer`}
+                  >
+                    <img src={item.src} alt="" className="hero-film__img" loading="lazy" />
+                  </button>
+                )
+              })}
+            </div>
+          </div>
         </div>
       </header>
 
@@ -308,17 +343,36 @@ export default function App() {
             cardRef.current = el
           }}
         >
-          <div className="letter__frame">
-            <div className="letter__shine" aria-hidden />
-            <div className="letter__inner">
-              <p className="letter__greeting">{CONTENT.letter.greeting}</p>
-              {CONTENT.letter.paragraphs.map((text, i) => (
-                <p key={i} className="letter__p">
-                  {text}
-                </p>
-              ))}
-              <p className="letter__closing">{CONTENT.letter.closing}</p>
-              <p className="letter__signature">{CONTENT.letter.signature}</p>
+          <div className="letter-stage" role="region" aria-label={CONTENT.letter.orbitAriaLabel}>
+            <div className="letter-stage__wash" aria-hidden />
+            {LETTER_ORBIT.map(({ galleryIndex, slot }) => {
+              const item = GALLERY_ITEMS[galleryIndex]
+              if (!item) return null
+              return (
+                <button
+                  key={`${slot}-${galleryIndex}`}
+                  type="button"
+                  className={`letter-photo letter-photo--${slot}`}
+                  onClick={() => openLightbox(galleryIndex)}
+                  aria-label={`Open ${item.alt} in viewer`}
+                >
+                  <span className="letter-photo__matte" aria-hidden />
+                  <img src={item.src} alt="" className="letter-photo__img" loading="lazy" />
+                </button>
+              )
+            })}
+            <div className="letter__frame">
+              <div className="letter__shine" aria-hidden />
+              <div className="letter__inner">
+                <p className="letter__greeting">{CONTENT.letter.greeting}</p>
+                {CONTENT.letter.paragraphs.map((text, i) => (
+                  <p key={i} className="letter__p">
+                    {text}
+                  </p>
+                ))}
+                <p className="letter__closing">{CONTENT.letter.closing}</p>
+                <p className="letter__signature">{CONTENT.letter.signature}</p>
+              </div>
             </div>
           </div>
         </article>
